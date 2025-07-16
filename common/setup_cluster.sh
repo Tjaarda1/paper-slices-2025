@@ -137,10 +137,8 @@ fi
 # ---------------------------------------------------------------------------
 # Prometheus (Submariner clusters only)
 # ---------------------------------------------------------------------------
-if [[ "${PROJECT}" == "submariner" ]]; then
-  docker run \
-    -p 9090:9090 \
-    -v "$(pwd)/common/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml" \
-    -v "${EXP_DIR}:/prometheus" \
-    prom/prometheus
-fi
+docker run \
+  -p 9090:9090 \
+  -v "$(pwd)/common/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml" \
+  -v "${EXP_DIR}:/prometheus" \
+  prom/prometheus
