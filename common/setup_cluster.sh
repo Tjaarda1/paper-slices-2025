@@ -137,8 +137,4 @@ fi
 # ---------------------------------------------------------------------------
 # Prometheus 
 # ---------------------------------------------------------------------------
-docker run \
-  -p 9090:9090 \
-  -v "$(pwd)/common/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml" \
-  -v "${EXP_DIR}:/prometheus" \
-  prom/prometheus
+docker-compose -f "${BASE_DIR}/common/prometheus/docker-compose.yaml" up -d
