@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      # Prometheus configuration in common/prometheus/
+      - ./common/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      # TSDB data directory (set EXP_DIR in config.env or your shell)
+      - ${EXP_DIR:-./data/prometheus}:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.retention.time=30d"
+      - "--web.enable-lifecycle"
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    pid: host
+    network_mode: host
+    restart: unless-stopped
+    command:
+      - "--path.rootfs=/host"
+    volumes:
+      - /:/host:ro,rslave
