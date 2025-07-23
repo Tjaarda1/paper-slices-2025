@@ -135,6 +135,8 @@ if [[ "${PROJECT}" == "l2sm" && "${CLUSTER_NAME}" != "control" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Prometheus 
+# Prometheus -- It's used by both experiments but we only want to deploy once
 # ---------------------------------------------------------------------------
-docker-compose -f "${BASE_DIR}/common/prometheus/docker-compose.yaml" up -d
+if [[ "${PROJECT}" == "submariner" ]]; then
+  docker compose -f "$(pwd)/common/prometheus/docker-compose.yaml" up -d
+fi
