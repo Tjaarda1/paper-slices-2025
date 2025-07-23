@@ -138,5 +138,5 @@ fi
 # Prometheus -- It's used by both experiments but we only want to deploy once
 # ---------------------------------------------------------------------------
 if [[ "${PROJECT}" == "submariner" ]]; then
-  docker compose -f "$(pwd)/common/prometheus/docker-compose.yaml" up -d
+  docker compose -f "$(pwd)/common/prometheus/docker-compose.yml" up -d
 fi
