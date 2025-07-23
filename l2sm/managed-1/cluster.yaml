@@ -4,7 +4,7 @@ name: l2sm-managed-1
 networking:
     disableDefaultCNI: true  # Disable Kindnet, we will use Flannel as the primary CNI plugin
     podSubnet: "10.244.0.0/16"  # Flannel requires this CIDR
-    apiServerAddress: "10.4.16.101"
+    apiServerAddress: 10.4.16.101
 nodes:
 - role: control-plane
   image: kindest/node:v1.32.0
