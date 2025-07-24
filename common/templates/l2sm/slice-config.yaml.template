@@ -1,0 +1,44 @@
+# Address of your gRPC server
+serverAddress: ${CONTROL_IP}:30051
+
+# An example L2Network name if you're testing network creation
+networkName: "ping-network-2"
+
+# Provider information for both Network and Slice
+provider:
+  name: "test-slice"
+  domain: "${CONTROL_IP}"
+  dnsPort: 30053
+  dnsGrpcPort: 30818
+  ofPort: 30663
+  sdnPort: 30808
+
+# Type of network you want to create
+networkType: "vnet"
+
+# Default namespace to place your L2SM resources in
+namespace: "l2sm-system"
+# List of clusters that belong to this network or slice
+clusters:
+  - name: l2sm-managed-1
+    apiKey: ${MANAGED_1_API_KEY}
+    bearerToken: ${MANAGED_1_BEARER_TOKEN}
+    nodes:
+      - l2sm-managed-1-control
+      - l2sm-managed-1-worker
+      - l2sm-managed-1-worker2
+    gatewayNode:
+      name: l2sm-managed-1-control
+      ipAddress: ${MANAGED_1_IP}
+    addressPool: "10.1.3.0/24"
+  - name: l2sm-managed-2
+    apiKey: ${MANAGED_2_API_KEY}
+    bearerToken: ${MANAGED_2_BEARER_TOKEN}
+    nodes:
+      - l2sm-managed-2-control
+      - l2sm-managed-2-worker
+      - l2sm-managed-2-worker2
+    gatewayNode:
+      name: l2sm-managed-2-control
+      ipAddress: ${MANAGED_2_IP}
+    addressPool: "10.1.4.0/24"
