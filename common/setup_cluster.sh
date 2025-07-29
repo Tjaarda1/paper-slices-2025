@@ -8,7 +8,6 @@
 #
 # Features:
 #   • Auto‑creates ./<project>/<cluster_name>/experiment-<N> (+CREATED_AT)
-#   • Optional EXPERIMENT_NUMBER arg (auto‑increments when omitted)
 #   • Renders KIND config from common/templates/cluster.yaml.template via envsubst
 #   • Starts Prometheus (Submariner only)
 #   • Installs cert‑manager + Multus automatically for L2SM managed clusters
@@ -33,7 +32,6 @@ set -euo pipefail
 # ---------------------------------------------------------------------------
 PROJECT=${1:-submariner}          # submariner | l2sm
 CLUSTER_NAME=${2:-control}       # control | managed-<n>
-NUMBER=${3:-}                    # Optional experiment number (auto if omitted)
 
 case "${PROJECT}" in
   submariner) DOCKER_PREFIX="sub-" ;;
@@ -53,21 +51,7 @@ CLUSTER_FULL_NAME="${DOCKER_PREFIX}${CLUSTER_NAME}"
 BASE_DIR="$(pwd)/${PROJECT}/${CLUSTER_NAME}"
 mkdir -p "${BASE_DIR}"
 
-if [[ -z "${NUMBER}" ]]; then
-  last_num=$(find "${BASE_DIR}" -maxdepth 1 -type d -name 'experiment-*' \
-               | awk -F'-' '{print $NF}' | sort -rn | head -n1)
-  if [[ -z "${last_num}" ]]; then
-    NUMBER=1
-  else
-    NUMBER=$((last_num + 1))
-  fi
-fi
 
-EXP_DIR="${BASE_DIR}/experiment-${NUMBER}"
-mkdir -p "${EXP_DIR}"
-
-# Timestamp for auditability
-printf '%s\n' "$(date +"%Y-%m-%dT%H:%M:%S%z")" > "${EXP_DIR}/CREATED_AT"
 
 # ---------------------------------------------------------------------------
 # KIND config generation from template
@@ -91,11 +75,9 @@ envsubst < "${TEMPLATE_PATH}" > "${BASE_DIR}/cluster.yaml"
 echo "\n--- CLUSTER BOOTSTRAP SUMMARY ---"
 echo "Project          : ${PROJECT}"
 echo "Cluster name     : ${CLUSTER_NAME} (full: ${CLUSTER_FULL_NAME})"
-echo "Experiment #     : ${NUMBER}"
 echo "Docker prefix    : ${DOCKER_PREFIX}"
 echo "API IP           : ${API_IP}"
 echo "Base directory   : ${BASE_DIR}"
-echo "Experiment dir   : ${EXP_DIR}"
 echo "KIND config path : ${BASE_DIR}/cluster.yaml"
 echo "--------------------------------\n"
 
