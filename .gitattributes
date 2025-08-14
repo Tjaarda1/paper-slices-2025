@@ -1,2 +1,3 @@
 **/kubeconfig filter=git-crypt diff=git-crypt
 **/test filter=git-crypt diff=git-crypt
+terraform/terraform.auto.tfvars filter=git-crypt diff=git-crypt
