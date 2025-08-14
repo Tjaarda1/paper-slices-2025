@@ -1,2 +1,4 @@
 .gitcryptkey
 plugins/
+local/
+config.env
