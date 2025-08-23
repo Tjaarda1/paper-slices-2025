@@ -22,6 +22,9 @@ export
 
 TERRAFORM:=$(LOCALBIN)/terraform
 GO:=$(LOCALBIN)/go/bin/go
+KUSTOMIZE:=$(LOCALBIN)/kustomize
+
+KUBECTL?=kubectl
 DOCKER?=docker
 
 ##@ Dependencies
@@ -50,6 +53,13 @@ deps: $(LOCALBIN) $(LOCALCONFIG) ## Check dependencies
 		echo "-> Go already exists at $(GO)"; \
 	fi
 
+	@if [ ! -f "$(KUSTOMIZE)" ]; then \
+		echo "-> Downloading Kustomize..."; \
+		curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash; \
+		cp ./kustomize $(KUSTOMIZE); \
+	else \
+		echo "-> Kustomize already exists at $(KUSTOMIZE)"; \
+	fi
 
 # terraform, ansible kubespray, gt crypt envsubst
 
@@ -66,7 +76,7 @@ clean: ## Cleanup the project folders
 
 
 ##@ Building
-.PHONY: build tf-apply tf-output inventory ansible clean deps
+.PHONY: build tf-apply tf-output inventory ansible clean deps monitoring
 
 KUBESPRAY_VERSION ?= v2.28.0
 KUBESPRAY_IMAGE   ?= quay.io/kubespray/kubespray:$(KUBESPRAY_VERSION)
@@ -107,22 +117,27 @@ ansible: inventory                                ## Run Kubespray against inven
 		ansible-playbook -i /inventory.ini -e cluster_name=$$cluster /fetch_kubeconfig.yaml"; \
 	done
 
-k8sconfig:                                 ## Run Kubespray against inventories
-	@for inv in $(wildcard $(LOCALCONFIG)/ansible/inventory-*.ini); do \
-	cluster=$$(basename $$inv | sed 's/inventory-\(.*\)\.ini/\1/'); \
-	echo "----> Kubespray for $$cluster"; \
-	kubeconfig_path="$(LOCALCONFIG)/k8s/"; \
-	$(DOCKER) run --rm \
-		--mount type=bind,source="$$HOME"/.ssh/id_rsa,dst=/root/.ssh/id_rsa \
-		--mount type=bind,source="$(shell pwd)"/ansible/fetch_kubeconfig.yaml,dst=/fetch_kubeconfig.yaml \
-		--mount type=bind,source="$$inv",dst=/inventory.ini,readonly \
-		--mount type=bind,source="$$kubeconfig_path",dst=/output/ \
-		$(KUBESPRAY_IMAGE) \
-		bash -c "ansible-playbook -i /inventory.ini -e cluster_name=$$cluster /fetch_kubeconfig.yaml"; \
-	done
-prerequisites:
+monitoring:
+	$(GO) run monitoring/gen_targets.go -i $(LOCALCONFIG)/terraform/terraform.tfstate -o $(LOCALCONFIG)/prometheus/cmmap.yaml
 	@for kc in $(wildcard $(LOCALCONFIG)/k8s/kubeconfig-*); do \
-	cluster=$$(basename $$kc | sed 's/^kubeconfig-//')
+	  cluster=$$(basename $$kc | sed 's/^kubeconfig-//'); \
+	  if [ "$$cluster" != "monitoring.yaml" ]; then \
+	    echo "[$$cluster] applying DaemonSets (cAdvisor, node_exporter)"; \
+	    $(KUBECTL) apply -f monitoring/cadvisor/daemonset.yaml --kubeconfig "$$kc"; \
+	    $(KUBECTL) apply -f monitoring/node_exporter/deploy.yaml --kubeconfig "$$kc"; \
+	  else \
+	    echo "[$$cluster] applying Prometheus + ConfigMap"; \
+	    $(KUBECTL) apply -f $(LOCALCONFIG)/prometheus/cmmap.yaml --kubeconfig "$$kc"; \
+	    $(KUBECTL) apply -f monitoring/prometheus/ --kubeconfig "$$kc"; \
+	  fi; \
+	done
+
+
+
+
+# prerequisites:
+# 	@for kc in $(wildcard $(LOCALCONFIG)/k8s/kubeconfig-*); do \
+# 	cluster=$$(basename $$kc | sed 's/^kubeconfig-//')
 
 
 install: prerequisites
