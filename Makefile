@@ -23,13 +23,10 @@ export
 TERRAFORM:=$(LOCALBIN)/terraform
 GO:=$(LOCALBIN)/go/bin/go
 KUSTOMIZE:=$(LOCALBIN)/kustomize
-
 KUBECTL?=kubectl
 DOCKER?=docker
 
 ##@ Dependencies
-
-.PHONY: deps
 
 .PHONY: deps
 
@@ -60,6 +57,7 @@ deps: $(LOCALBIN) $(LOCALCONFIG) ## Check dependencies
 	else \
 		echo "-> Kustomize already exists at $(KUSTOMIZE)"; \
 	fi
+	
 
 # terraform, ansible kubespray, gt crypt envsubst
 
@@ -76,14 +74,14 @@ clean: ## Cleanup the project folders
 
 
 ##@ Building
-.PHONY: build tf-apply tf-output inventory ansible clean deps monitoring
+.PHONY: build tf-apply tf-output inventory ansible clean deps monitoring kubeconfig
 
 KUBESPRAY_VERSION ?= v2.28.0
 KUBESPRAY_IMAGE   ?= quay.io/kubespray/kubespray:$(KUBESPRAY_VERSION)
 OUTPUTS_JSON      ?= $(LOCALCONFIG)/terraform/outputs.json
 INVENTORIES        = $(wildcard $(LOCALCONFIG)/ansible/inventory*.ini)
 
-build: clean deps tf-apply inventory ansible      ## Full build (apply + ansible)
+build: clean deps tf-apply inventory ansible  monitoring    ## Full build (apply + ansible)
 
 tf-apply: deps $(LOCALCONFIG)                                        ## Create/modify infra
 	$(info Running terraform apply)
@@ -134,14 +132,53 @@ monitoring:
 
 
 
+kubeconfig: $(LOCALCONFIG) ## Build merged kubeconfig with per-cluster context names
+	@set -euo pipefail; \
+	out="$(LOCALCONFIG)/kubeconfig"; \
+	rm -f "$$out"; \
+	files=(); \
+	for kc in $(wildcard $(LOCALCONFIG)/k8s/kubeconfig-*); do \
+	  [ -f "$$kc" ] || continue; \
+	  cluster=$$(basename "$$kc" | sed 's/^kubeconfig-//'); \
+	  cur_ctx=$$($(KUBECTL) config --kubeconfig "$$kc" current-context 2>/dev/null || true); \
+	  if [ -n "$$cur_ctx" ] && [ "$$cur_ctx" != "$$cluster" ]; then \
+	    echo "[ $$cluster ] renaming context '$$cur_ctx' -> '$$cluster'"; \
+	    sudo $(KUBECTL) config --kubeconfig "$$kc" rename-context "$$cur_ctx" "$$cluster" >/dev/null; \
+	  else \
+	    echo "[ $$cluster ] context already named '$$cluster'"; \
+	  fi; \
+	  files+=("$$kc"); \
+	done; \
+	if [ "$${#files[@]}" -eq 0 ]; then \
+	  echo "No kubeconfig files found under $(LOCALCONFIG)/k8s/ (expected 'kubeconfig-*')."; \
+	  exit 1; \
+	fi; \
+	echo "Merging $${#files[@]} kubeconfigs into $$out"; \
+	KUBECONFIG="$$(IFS=:; echo "$${files[*]}")" $(KUBECTL) config view --raw --flatten --merge > "$$out"; \
+	# set default context to the first cluster found
+	first_ctx=$$(basename "$${files[0]}" | sed 's/^kubeconfig-//'); \
+	$(KUBECTL) --kubeconfig "$$out" config use-context "$$first_ctx" >/dev/null || true; \
+	echo "Wrote $$out"; \
+	echo; \
+	echo "Available contexts:"; \
+	$(KUBECTL) --kubeconfig "$$out" config get-contexts
+
+##@ Installing
+.PHONY: install
+
+install: 
+	@for kc in $(wildcard $(LOCALCONFIG)/k8s/kubeconfig-*); do \
+	  cluster=$$(basename $$kc | sed 's/^kubeconfig-//'); \
+	  if [ "$$cluster" != "monitoring.yaml" ]; then \
+	    $(KUBECTL) apply -f 
+	    $(KUBECTL) apply -f
+	  else \
+	done
 
 # prerequisites:
 # 	@for kc in $(wildcard $(LOCALCONFIG)/k8s/kubeconfig-*); do \
 # 	cluster=$$(basename $$kc | sed 's/^kubeconfig-//')
 
-
-install: prerequisites
-# (keep your clean/deps targets as they were)
 
 ##@ Helpers
 

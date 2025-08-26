@@ -82,3 +82,7 @@ Example:
 
 **IMPORTANT:** Always run scripts from the repository's **root directory**. Scripts are not path-independent.
 
+
+
+cadvisor: 9101
+node exporter: 9102

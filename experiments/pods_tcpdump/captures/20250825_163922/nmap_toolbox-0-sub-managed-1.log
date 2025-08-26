@@ -1,0 +1,8 @@
+Starting Nmap 7.95 ( https://nmap.org ) at 2025-08-25 14:41 UTC
+Nmap scan report for 242.0.255.251
+Host is up (0.0041s latency).
+Nmap scan report for 242.0.255.252
+Host is up (0.0041s latency).
+Nmap scan report for 242.0.255.254
+Host is up (0.0015s latency).
+Nmap done: 256 IP addresses (3 hosts up) scanned in 18.23 seconds

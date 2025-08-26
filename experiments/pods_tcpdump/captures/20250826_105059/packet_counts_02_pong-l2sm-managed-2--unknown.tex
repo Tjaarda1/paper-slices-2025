@@ -1,0 +1,98 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.85000,0.95000,1.00000}%
+\definecolor{mycolor2}{rgb}{0.95000,0.85000,0.85000}%
+\definecolor{mycolor3}{rgb}{0.06600,0.44300,0.74500}%
+\definecolor{mycolor4}{rgb}{0.12941,0.12941,0.12941}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=\textwidth,
+height=0.213\textheight,
+at={(0\textwidth,0\textheight)},
+scale only axis,
+xmin=0,
+xmax=59,
+xlabel style={font=\color{mycolor4}},
+xlabel={Time (s)},
+ymin=0,
+ymax=52.5,
+ylabel style={font=\color{mycolor4}},
+ylabel={Packets/s},
+axis background/.style={fill=white},
+axis x line*=bottom,
+axis y line*=left,
+xmajorgrids,
+ymajorgrids,
+grid=both,
+tick align=outside,
+scaled y ticks=true,
+title style={yshift=1.0ex}
+]
+
+\addplot[area legend, draw=none, fill=mycolor1, fill opacity=0.35, forget plot]
+table[row sep=crcr] {%
+x	y\\
+9	0\\
+19	0\\
+19	52.5\\
+9	52.5\\
+}--cycle;
+
+\addplot[area legend, draw=none, fill=mycolor2, fill opacity=0.25, forget plot]
+table[row sep=crcr] {%
+x	y\\
+34	0\\
+44	0\\
+44	52.5\\
+34	52.5\\
+}--cycle;
+\addplot [color=mycolor3, forget plot]
+  table[row sep=crcr]{%
+0	0\\
+5	0\\
+7	2\\
+8	0\\
+10	2\\
+11	0\\
+13	2\\
+14	0\\
+16	2\\
+17	0\\
+19	2\\
+20	0\\
+22	2\\
+23	0\\
+25	2\\
+26	0\\
+27	1\\
+30	1\\
+31	0\\
+32	2\\
+34	0\\
+35	2\\
+36	0\\
+38	2\\
+39	0\\
+41	2\\
+42	0\\
+44	2\\
+45	0\\
+47	2\\
+48	0\\
+50	2\\
+51	0\\
+53	2\\
+54	0\\
+56	2\\
+57	0\\
+58	1\\
+59	1\\
+};
+\end{axis}
+\end{tikzpicture}%
