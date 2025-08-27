@@ -1,0 +1,5 @@
+PING 10.1.255.255 (10.1.255.255) from 10.233.64.24 eth0: 56(84) bytes of data.
+
+--- 10.1.255.255 ping statistics ---
+49 packets transmitted, 0 received, 100% packet loss, time 9829ms
+

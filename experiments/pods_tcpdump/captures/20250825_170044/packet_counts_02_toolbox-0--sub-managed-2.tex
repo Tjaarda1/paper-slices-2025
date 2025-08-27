@@ -19,12 +19,10 @@ scale only axis,
 xmin=0,
 xmax=59,
 ymin=0,
-ymax=10.5,
+ymax=52.5,
 ylabel style={font=\color{mycolor4}},
 ylabel={Packets/s},
 axis background/.style={fill=white},
-title style={font=\bfseries\color{mycolor4}},
-title={toolbox-0 — sub-managed-2},
 axis x line*=bottom,
 axis y line*=left,
 xmajorgrids,
@@ -40,8 +38,8 @@ table[row sep=crcr] {%
 x	y\\
 13	0\\
 23	0\\
-23	10.5\\
-13	10.5\\
+23	52.5\\
+13	52.5\\
 }--cycle;
 
 \addplot[area legend, draw=none, fill=mycolor2, fill opacity=0.25, forget plot]
@@ -49,8 +47,8 @@ table[row sep=crcr] {%
 x	y\\
 38	0\\
 45	0\\
-45	10.5\\
-38	10.5\\
+45	52.5\\
+38	52.5\\
 }--cycle;
 \addplot [color=mycolor3, forget plot]
   table[row sep=crcr]{%

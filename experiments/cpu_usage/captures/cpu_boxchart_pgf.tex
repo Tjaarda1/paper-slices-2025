@@ -1,0 +1,109 @@
+% Auto-generated PGFPlots grouped boxplots (filled)
+% Requires: pgfplots + statistics lib, compat=1.18
+
+\definecolor{l2smColor}{RGB}{0,114,189}
+\definecolor{submarinerColor}{RGB}{255,0,0}
+
+\begin{tikzpicture}
+\begin{axis}[
+  width=\linewidth,
+  height=0.5\linewidth,
+  ymin=0, ymax=0.1,
+  ymajorgrids,
+  boxplot/draw direction=y,
+  xtick={1,6},
+  xticklabels={l2sm-control,l2sm-managed-1,l2sm-managed-2,sub-control,sub-managed-1,sub-managed-2},
+  xticklabel style={rotate=0},
+  line cap=rect, line join=miter,
+]
+\addlegendimage{area legend,fill=l2smColor,draw=black}
+\addlegendentry{l2sm}
+\addlegendimage{area legend,fill=submarinerColor,draw=black}
+\addlegendentry{submariner}
+
+\addplot+[
+  boxplot prepared={
+    lower whisker=0.0205034,
+    lower quartile=0.02249,
+    median=0.0233688,
+    upper quartile=0.0243715,
+    upper whisker=0.0267031,
+    draw position=0.77,
+    box extend=0.22
+  },
+  fill=l2smColor, fill opacity=0.5,
+  draw=black,
+  solid
+] coordinates {};
+\addplot+[
+  boxplot prepared={
+    lower whisker=0.05173,
+    lower quartile=0.0542677,
+    median=0.0550517,
+    upper quartile=0.0560364,
+    upper whisker=0.0586823,
+    draw position=1.77,
+    box extend=0.22
+  },
+  fill=l2smColor, fill opacity=0.5,
+  draw=black,
+  solid
+] coordinates {};
+\addplot+[
+  boxplot prepared={
+    lower whisker=0.0529419,
+    lower quartile=0.0538516,
+    median=0.0546683,
+    upper quartile=0.0554233,
+    upper whisker=0.0576666,
+    draw position=2.77,
+    box extend=0.22
+  },
+  fill=l2smColor, fill opacity=0.5,
+  draw=black,
+  solid
+] coordinates {};
+\addplot+[
+  boxplot prepared={
+    lower whisker=0.00200174,
+    lower quartile=0.00232772,
+    median=0.0024752,
+    upper quartile=0.00266513,
+    upper whisker=0.00309304,
+    draw position=4.23,
+    box extend=0.22
+  },
+  fill=submarinerColor, fill opacity=0.5,
+  draw=black,
+  solid
+] coordinates {};
+\addplot+[
+  boxplot prepared={
+    lower whisker=0.0568978,
+    lower quartile=0.0591826,
+    median=0.060287,
+    upper quartile=0.0612513,
+    upper whisker=0.0631208,
+    draw position=5.23,
+    box extend=0.22
+  },
+  fill=submarinerColor, fill opacity=0.5,
+  draw=black,
+  solid
+] coordinates {};
+\addplot+[
+  boxplot prepared={
+    lower whisker=0.0463302,
+    lower quartile=0.0489787,
+    median=0.0505121,
+    upper quartile=0.0573422,
+    upper whisker=0.0611349,
+    draw position=6.23,
+    box extend=0.22
+  },
+  fill=submarinerColor, fill opacity=0.5,
+  draw=black,
+  solid
+] coordinates {};
+\end{axis}
+\end{tikzpicture}

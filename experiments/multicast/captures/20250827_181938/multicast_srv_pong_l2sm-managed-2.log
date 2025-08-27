@@ -1,0 +1,7 @@
+Defaulted container "alpine" out of: alpine, debugger-kt6sw (ephem), debugger-n6vc2 (ephem)
+------------------------------------------------------------
+Server listening on UDP port 5001
+Joining multicast group  239.94.1.1
+Server set to single client traffic mode (per multicast receive)
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
