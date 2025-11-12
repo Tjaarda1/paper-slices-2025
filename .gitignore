@@ -3,3 +3,4 @@ plugins/
 local/
 config.env
 terraform/.terraform/
+*.log

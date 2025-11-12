@@ -32,5 +32,5 @@ xlabel('cluster'); ylabel('cpu cores');
 title('CPU cores by cluster (fill color = app)');
 legend(appCats, 'Location','best');
 grid on;
-tikz_boxplot(categorical(T.cluster), T.cpu_cores)
+%tikz_boxplot(categorical(T.cluster), T.cpu_cores)
 %matlab2tikz('captures/k8s_usage_12h.tex');
