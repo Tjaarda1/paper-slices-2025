@@ -36,8 +36,8 @@ fi
 
 for f in "${files[@]}"; do
   base="$(basename "$f")"
-  stem="${base%.*}"               # e.g., kubeconfig-l2sm-control
-  name="${stem#kubeconfig-}"      # e.g., l2sm-control
+  stem="${base%.*}"               # e.g., kubeconfig-l2sces-control
+  name="${stem#kubeconfig-}"      # e.g., l2sces-control
 
   cluster="$name"
   user="$name"

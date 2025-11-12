@@ -17,28 +17,28 @@ provider:
 networkType: "vnet"
 
 # Default namespace to place your L2SM resources in
-namespace: "l2sm-system"
+namespace: "l2sces-system"
 # List of clusters that belong to this network or slice
 clusters:
-  - name: l2sm-managed-1
+  - name: l2sces-managed-1
     apiKey: ${MANAGED_1_API_KEY}
     bearerToken: ${MANAGED_1_BEARER_TOKEN}
     nodes:
-      - l2sm-managed-1-control
-      - l2sm-managed-1-worker
-      - l2sm-managed-1-worker2
+      - l2sces-managed-1-control
+      - l2sces-managed-1-worker
+      - l2sces-managed-1-worker2
     gatewayNode:
-      name: l2sm-managed-1-control
+      name: l2sces-managed-1-control
       ipAddress: ${MANAGED_1_IP}
     addressPool: "10.1.3.0/24"
-  - name: l2sm-managed-2
+  - name: l2sces-managed-2
     apiKey: ${MANAGED_2_API_KEY}
     bearerToken: ${MANAGED_2_BEARER_TOKEN}
     nodes:
-      - l2sm-managed-2-control
-      - l2sm-managed-2-worker
-      - l2sm-managed-2-worker2
+      - l2sces-managed-2-control
+      - l2sces-managed-2-worker
+      - l2sces-managed-2-worker2
     gatewayNode:
-      name: l2sm-managed-2-control
+      name: l2sces-managed-2-control
       ipAddress: ${MANAGED_2_IP}
     addressPool: "10.1.4.0/24"

@@ -32,13 +32,13 @@ Run the following commands from the root directory only:
 1. **Set up clusters**:
 
 ```bash
-./common/setup_cluster.sh <l2sm|submariner> <control|managed-n>
+./common/setup_cluster.sh <l2sces|submariner> <control|managed-n>
 ```
 
 2. **Install the components**:
 
 ```bash
-./<l2sm|submariner>/install.sh
+./<l2sces|submariner>/install.sh
 ```
 
 3. **Execute experiments**:
@@ -75,7 +75,7 @@ Example:
   - Running `./start.sh` initiates an automated pipeline, producing graphs and CSV results.
   - Each experiment iteration is saved in a timestamped subdirectory with relevant documentation.
 
-- `./l2sm | ./submariner`:
+- `./l2sces | ./submariner`:
 
   - Contains environment-specific templates and final configurations.
   - `control`, `managed-1`, and `managed-2` directories represent individual clusters with solution-specific templates.

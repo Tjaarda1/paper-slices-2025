@@ -28,10 +28,10 @@ variable "clusters" {
   type = list(string)
   default = [
     "sub-control",
-    "l2sm-control",
+    "l2sces-control",
     "sub-managed-1",
     "sub-managed-2",
-    "l2sm-managed-1",
-    "l2sm-managed-2"
+    "l2sces-managed-1",
+    "l2sces-managed-2"
   ]
 }

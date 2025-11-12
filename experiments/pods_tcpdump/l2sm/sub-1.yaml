@@ -17,10 +17,10 @@ kind: Pod
 metadata:
   name: pong
   labels:
-    l2sm/app: pong
-    l2sm: "true"
+    l2sces/app: pong
+    l2sces: "true"
   annotations:
-    l2sm/networks: ping-network
+    l2sces/networks: ping-network
 spec:
   containers:
   - name: alpine

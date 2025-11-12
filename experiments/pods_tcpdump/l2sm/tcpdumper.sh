@@ -9,9 +9,9 @@ set -euo pipefail
 
 # --- Config (override via env) -------------------------------------------------
 KUBECONFIG_PATH="${KUBECONFIG_PATH:-local/configs/kubeconfig}"
-CTX1="${CTX1:-l2sm-managed-1}"
-CTX2="${CTX2:-l2sm-managed-2}"
-NS="${NS:-l2sm-system}"
+CTX1="${CTX1:-l2sces-managed-1}"
+CTX2="${CTX2:-l2sces-managed-2}"
+NS="${NS:-l2sces-system}"
 
 # Capture timing
 DURATION="${DURATION:-60}"          # total tcpdump capture time (seconds)

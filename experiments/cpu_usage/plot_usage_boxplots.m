@@ -8,7 +8,7 @@ appCats = categories(categorical(T.app));
 colors = zeros(numel(appCats),3);
 for i = 1:numel(appCats)
     switch string(appCats{i})
-        case "l2sm"
+        case "l2sces"
             colors(i,:) = [0 0.4470 0.7410]; % blue
         case "submariner"
             colors(i,:) = [1 0 0];           % red

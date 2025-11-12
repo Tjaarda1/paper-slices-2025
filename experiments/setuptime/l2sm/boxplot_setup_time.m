@@ -5,7 +5,7 @@ function boxplot_setup_time(csvPath)
 %   boxplot_setup_time('experiments/.../setup_time.csv')
 
     if nargin < 1 || isempty(csvPath)
-        csvPath = 'experiments/setuptime/l2sm/captures/setup_time.csv';
+        csvPath = 'experiments/setuptime/l2sces/captures/setup_time.csv';
     end
     if ~isfile(csvPath)
         error('CSV not found: %s', csvPath);

@@ -17,10 +17,10 @@ kind: Pod
 metadata:
   name: pong-st
   labels:
-    l2sm/app: pong-st
-    l2sm: "true"
+    l2sces/app: pong-st
+    l2sces: "true"
   annotations:
-    l2sm/networks: '[{ "name": "setup-time","ips": ["192.168.1.3/24"]}]'
+    l2sces/networks: '[{ "name": "setup-time","ips": ["192.168.1.3/24"]}]'
 spec:
   containers:
   - name: alpine

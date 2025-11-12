@@ -2,7 +2,7 @@
 set -euo pipefail
 echo hola
 # Load variables
-source "./experiments/setuptime/l2sm/variables.sh"
+source "./experiments/setuptime/l2sces/variables.sh"
 echo hola
 
 # tiny helpers

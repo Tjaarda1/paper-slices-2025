@@ -20,11 +20,11 @@ STEP_2=$(( TIMEFRAME_H * 3600 / N_POINTS_2 ))
 echo $STEP_1
 # Apps, clusters, and namespaces
 declare -A NS
-NS[l2sm]="l2sm-system"
+NS[l2sces]="l2sces-system"
 NS[submariner]="submariner-operator"
 
-L2SM_CONTROL="l2sm-control"
-L2SM_MANAGED=( "l2sm-managed-1" "l2sm-managed-2" )
+L2SM_CONTROL="l2sces-control"
+L2SM_MANAGED=( "l2sces-managed-1" "l2sces-managed-2" )
 
 SUB_CONTROL="sub-control"
 SUB_MANAGED=( "sub-managed-1" "sub-managed-2" )
@@ -85,12 +85,12 @@ jq -nr --arg app "$app" --arg plane "$plane" --arg cluster "$cluster" --argjson 
 
 }
 
-# ---------------- l2sm ----------------
+# ---------------- l2sces ----------------
 # Control: $N_POINTS_1 points
-fetch_and_emit "l2sm" "control" "$L2SM_CONTROL" "${NS[l2sm]}" $N_POINTS_1 "$STEP_1"
+fetch_and_emit "l2sces" "control" "$L2SM_CONTROL" "${NS[l2sces]}" $N_POINTS_1 "$STEP_1"
 # Managed: $N_POINTS_2 points per cluster
 for c in "${L2SM_MANAGED[@]}"; do
-  fetch_and_emit "l2sm" "managed" "$c" "${NS[l2sm]}" $N_POINTS_2 "$STEP_2"
+  fetch_and_emit "l2sces" "managed" "$c" "${NS[l2sces]}" $N_POINTS_2 "$STEP_2"
 done
 
 # ---------------- submariner ----------------

@@ -12,7 +12,7 @@ height=5.493in,
 at={(1.454in,0.741in)},
 scale only axis,
 bar shift auto,
-symbolic x coords={submariner-control,submariner-managed,l2sm-control,l2sm-managed},
+symbolic x coords={submariner-control,submariner-managed,l2sces-control,l2sces-managed},
 enlarge x limits=0.2,
 xtick=data,
 xlabel style={font=\color{mycolor2}},
@@ -23,7 +23,7 @@ ylabel style={font=\color{mycolor2}},
 ylabel={CPU usage (cores)},
 axis background/.style={fill=white},
 title style={font=\bfseries\color{mycolor2}},
-title={Mean CPU usage: submariner vs l2sm (control/managed)},
+title={Mean CPU usage: submariner vs l2sces (control/managed)},
 axis x line*=bottom,
 axis y line*=left,
 xmajorgrids,
@@ -32,33 +32,33 @@ legend style={legend cell align=left, align=left},
 ybar,
 bar width=18pt,
 bar shift=0pt,
-xtick={submariner-control,submariner-managed,l2sm-control,l2sm-managed},
+xtick={submariner-control,submariner-managed,l2sces-control,l2sces-managed},
 enlarge x limits=0.3,
 clip=false
 ]
 \addplot[ybar, fill=mycolor1, draw=mycolor2, area legend] table[row sep=crcr] {%
 submariner-control	0.00249921856213693\\
 submariner-managed	0.056283422320178\\
-l2sm-control	nan\\
-l2sm-managed	nan\\
+l2sces-control	nan\\
+l2sces-managed	nan\\
 };
 \addplot[forget plot, color=mycolor2] table[row sep=crcr] {%
 submariner-control	0\\
-l2sm-managed	0\\
+l2sces-managed	0\\
 };
 \addlegendentry{submariner}
 
 \addplot[ybar, fill=mycolor3, draw=mycolor2, area legend] table[row sep=crcr] {%
 submariner-control	nan\\
 submariner-managed	nan\\
-l2sm-control	0.0235713020423083\\
-l2sm-managed	0.0552811960047451\\
+l2sces-control	0.0235713020423083\\
+l2sces-managed	0.0552811960047451\\
 };
 \addplot[forget plot, color=mycolor2] table[row sep=crcr] {%
 submariner-control	0\\
-l2sm-managed	0\\
+l2sces-managed	0\\
 };
-\addlegendentry{l2sm}
+\addlegendentry{l2sces}
 
 \end{axis}
 \end{tikzpicture}%

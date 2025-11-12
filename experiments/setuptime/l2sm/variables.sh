@@ -2,12 +2,12 @@
 # Shared config for L2SM setup-time experiments
 
 ### Kubernetes
-export KCFG_A="local/configs/k8s/kubeconfig-l2sm-managed-1.yaml"   # cluster with "ping"
-export KCFG_B="local/configs/k8s/kubeconfig-l2sm-managed-2.yaml"   # cluster with "pong"
-export NS="l2sm-system"
+export KCFG_A="local/configs/k8s/kubeconfig-l2sces-managed-1.yaml"   # cluster with "ping"
+export KCFG_B="local/configs/k8s/kubeconfig-l2sces-managed-2.yaml"   # cluster with "pong"
+export NS="l2sces-system"
 export POD_PING="ping-st"
 export POD_PONG="pong-st"
-export NET_IF="net1"   # l2sm interface
+export NET_IF="net1"   # l2sces interface
 
 ### Workload assets / helpers
 export GO_CREATE_CMD='(
@@ -15,8 +15,8 @@ export GO_CREATE_CMD='(
   cd ./local/bin/l2sm-md/
   go run ./test/ --test-network-create
 )'
-export PING_YAML="experiments/setuptime/l2sm/ping.yaml"
-export PONG_YAML="experiments/setuptime/l2sm/pong.yaml"
+export PING_YAML="experiments/setuptime/l2sces/ping.yaml"
+export PONG_YAML="experiments/setuptime/l2sces/pong.yaml"
 
 ### Controller / ONOS
 # Set IDCO_IP to the controller host (with or without port). Examples:
@@ -34,7 +34,7 @@ export ONOS_AUTH="${ONOS_AUTH:-karaf:karaf}"
 ### Probing parameters
 export P_MS="${P_MS:-5}"        # probe period (ms). Error bound will be ± P_MS/2
 export RUNS="${RUNS:-100}"      # number of trials
-export OUT_DIR="${OUT_DIR:-experiments/setuptime/l2sm/captures}"
+export OUT_DIR="${OUT_DIR:-experiments/setuptime/l2sces/captures}"
 export OUT_CSV="${OUT_CSV:-$OUT_DIR/setup_time.csv}"
 
 ### L2SM IPs on $NET_IF (static addresses you assigned)

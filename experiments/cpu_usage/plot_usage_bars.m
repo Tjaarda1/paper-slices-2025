@@ -8,9 +8,9 @@ G = groupsummary(T, {'app','plane'}, 'mean', 'cpu_cores');  % -> mean_cpu_cores
 
 pairs  = ["submariner","control";
           "submariner","managed";
-          "l2sm","control";
-          "l2sm","managed"];
-labels = ["submariner-control","submariner-managed","l2sm-control","l2sm-managed"];
+          "l2sces","control";
+          "l2sces","managed"];
+labels = ["submariner-control","submariner-managed","l2sces-control","l2sces-managed"];
 
 y = nan(1,4);
 for k = 1:4
@@ -33,12 +33,12 @@ y_l2  = [NaN NaN y(3) y(4)];
 figure('Color','w');
 hold on;
 b1 = bar(x, y_sub, 'FaceColor', c_sub, 'DisplayName','submariner');
-b2 = bar(x, y_l2,  'FaceColor', c_l2,  'DisplayName','l2sm');
+b2 = bar(x, y_l2,  'FaceColor', c_l2,  'DisplayName','l2sces');
 hold off;
 
 ylabel('CPU usage (cores)');
 xlabel('Instance');
-title('Mean CPU usage: submariner vs l2sm (control/managed)');
+title('Mean CPU usage: submariner vs l2sces (control/managed)');
 grid on;
 legend('Location','northeast');
 
@@ -51,6 +51,6 @@ matlab2tikz(texfile, ...
   'showInfo', false, ...
   'extraAxisOptions', { ...
      'ybar','bar width=18pt','bar shift=0pt', ...
-     'xtick={submariner-control,submariner-managed,l2sm-control,l2sm-managed}', ...
+     'xtick={submariner-control,submariner-managed,l2sces-control,l2sces-managed}', ...
      'enlarge x limits=0.3','clip=false' ...
   });

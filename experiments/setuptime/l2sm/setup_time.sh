@@ -8,7 +8,7 @@
 # set -euo pipefail
 
 # Bring in your variables (kubeconfigs, pods, ONOS urls, IPs, P_MS, RUNS, OUT_DIR/CSV)
-source ./experiments/setuptime/l2sm/variables.sh
+source ./experiments/setuptime/l2sces/variables.sh
 
 cleanup() {
   kubectl --kubeconfig "$KCFG_A" -n "$NS" exec "$POD_PING" -- sh -lc '
