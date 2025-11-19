@@ -73,9 +73,9 @@ kubectl --kubeconfig "$K8S_DIR/kubeconfig-l2sces-managed-2.yaml" wait --for=cond
 
 
 kubectl --kubeconfig "$K8S_DIR/kubeconfig-l2sces-managed-1.yaml" \
-  apply -f "https://github.com/Networks-it-uc3m/L2S-M/raw/refs/heads/development/deployments/l2sces-deployment.yaml"
+  apply -f "https://github.com/Networks-it-uc3m/L2S-M/raw/refs/heads/development/deployments/l2sm-deployment.yaml"
 
 kubectl --kubeconfig "$K8S_DIR/kubeconfig-l2sces-managed-2.yaml" \
-  apply -f "https://github.com/Networks-it-uc3m/L2S-M/raw/refs/heads/development/deployments/l2sces-deployment.yaml"
+  apply -f "https://github.com/Networks-it-uc3m/L2S-M/raw/refs/heads/development/deployments/l2sm-deployment.yaml"
 
 echo "✓ Done."
