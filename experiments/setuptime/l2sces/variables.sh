@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Shared config for L2SM setup-time experiments
+# Shared config for L2SCES setup-time experiments
 
 ### Kubernetes
 export KCFG_A="local/configs/k8s/kubeconfig-l2sces-managed-1.yaml"   # cluster with "ping"
@@ -37,6 +37,6 @@ export RUNS="${RUNS:-100}"      # number of trials
 export OUT_DIR="${OUT_DIR:-experiments/setuptime/l2sces/captures}"
 export OUT_CSV="${OUT_CSV:-$OUT_DIR/setup_time.csv}"
 
-### L2SM IPs on $NET_IF (static addresses you assigned)
+### L2SCES IPs on $NET_IF (static addresses you assigned)
 export PING_IP="${PING_IP:-192.168.1.2}"
 export PONG_IP="${PONG_IP:-192.168.1.3}"

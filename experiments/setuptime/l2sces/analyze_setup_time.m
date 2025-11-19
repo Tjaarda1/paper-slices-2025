@@ -1,5 +1,5 @@
 function analyze_setup_time(csvPath)
-% analyze_setup_time  Compute summary stats for L2SM setup-time runs.
+% analyze_setup_time  Compute summary stats for L2SCES setup-time runs.
 % Usage:
 %   analyze_setup_time                    % uses default CSV path
 %   analyze_setup_time('path/to/setup_time.csv')

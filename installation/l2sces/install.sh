@@ -9,22 +9,22 @@ LOCALCONFIG="$ROOT/local/configs"
 LOCALBIN="$ROOT/local/bin"
 
 K8S_DIR="$LOCALCONFIG/k8s"
-L2SM_KEYS_DIR="$LOCALCONFIG/l2sces"
+L2SCES_KEYS_DIR="$LOCALCONFIG/l2sces"
 
 # Create dirs
-mkdir -p "$LOCALBIN" "$L2SM_KEYS_DIR"
+mkdir -p "$LOCALBIN" "$L2SCES_KEYS_DIR"
 
 # ---- Build l2sm-md into LOCALBIN ------------------------------------------------
-L2SM_MD_DIR="$LOCALBIN/l2sm-md"
-L2SM_MD_BIN="$L2SM_MD_DIR/bin/apply-cert"
+L2SCES_MD_DIR="$LOCALBIN/l2sm-md"
+L2SCES_MD_BIN="$L2SCES_MD_DIR/bin/apply-cert"
 
-if [[ ! -x "$L2SM_MD_BIN" ]]; then
-  echo "==> Cloning and building l2sm-md into $L2SM_MD_DIR"
-  rm -rf "$L2SM_MD_DIR"
-  git clone https://github.com/Networks-it-uc3m/l2sm-md.git "$L2SM_MD_DIR"
-  make -C "$L2SM_MD_DIR" build
+if [[ ! -x "$L2SCES_MD_BIN" ]]; then
+  echo "==> Cloning and building l2sm-md into $L2SCES_MD_DIR"
+  rm -rf "$L2SCES_MD_DIR"
+  git clone https://github.com/Networks-it-uc3m/l2sm-md.git "$L2SCES_MD_DIR"
+  make -C "$L2SCES_MD_DIR" build
 else
-  echo "==> Using existing $L2SM_MD_BIN"
+  echo "==> Using existing $L2SCES_MD_BIN"
 fi
 
 # ---- Deploy multi-domain client on the control cluster --------------------------
@@ -36,24 +36,24 @@ kubectl --kubeconfig "$K8S_DIR/kubeconfig-l2sces-control.yaml" \
 echo "==> Extracting CA from managed-1"
 kubectl --kubeconfig "$K8S_DIR/kubeconfig-l2sces-managed-1.yaml" \
   config view -o jsonpath='{.clusters[0].cluster.certificate-authority-data}' --raw \
-  | base64 -d > "$L2SM_KEYS_DIR/cluster-managed-1.key"
+  | base64 -d > "$L2SCES_KEYS_DIR/cluster-managed-1.key"
 
 echo "==> Applying cert for managed-1 into control"
-"$L2SM_MD_BIN" --namespace l2sces-system \
+"$L2SCES_MD_BIN" --namespace l2sces-system \
   --kubeconfig "$K8S_DIR/kubeconfig-l2sces-control.yaml" \
   --clustername l2sces-managed-1 \
-  "$L2SM_KEYS_DIR/cluster-managed-1.key"
+  "$L2SCES_KEYS_DIR/cluster-managed-1.key"
 
 echo "==> Extracting CA from managed-2"
 kubectl --kubeconfig "$K8S_DIR/kubeconfig-l2sces-managed-2.yaml" \
   config view -o jsonpath='{.clusters[0].cluster.certificate-authority-data}' --raw \
-  | base64 -d > "$L2SM_KEYS_DIR/cluster-managed-2.key"
+  | base64 -d > "$L2SCES_KEYS_DIR/cluster-managed-2.key"
 
 echo "==> Applying cert for managed-2 into control"
-"$L2SM_MD_BIN" --namespace l2sces-system \
+"$L2SCES_MD_BIN" --namespace l2sces-system \
   --kubeconfig "$K8S_DIR/kubeconfig-l2sces-control.yaml" \
   --clustername l2sces-managed-2 \
-  "$L2SM_KEYS_DIR/cluster-managed-2.key"
+  "$L2SCES_KEYS_DIR/cluster-managed-2.key"
 
 # ---- Install L2S-M on the managed clusters -------------------------------------
 echo "==> Installing L2S-M on managed clusters"

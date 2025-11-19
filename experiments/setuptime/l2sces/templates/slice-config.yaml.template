@@ -16,7 +16,7 @@ provider:
 # Type of network you want to create
 networkType: "vnet"
 
-# Default namespace to place your L2SM resources in
+# Default namespace to place your L2SCES resources in
 namespace: "l2sces-system"
 # List of clusters that belong to this network or slice
 clusters:

@@ -1,88 +1,168 @@
-# Experimentation Repository README
+# Experimentation Repository
 
-## Initial Setup
+This repository automates the full lifecycle for creating Kubernetes clusters, installing L2S-CES/Submariner, deploying monitoring, and running experiments.
+Everything is orchestrated through a **single Makefile workflow** that provisions infrastructure, configures clusters using **Kubespray**, and prepares monitoring endpoints.
 
-1. **Install prerequisites** in each virtual machine environment:
+---
 
-```bash
-./common/install_requisites.sh
-```
+# Quick Start
 
-2. **Set up **``** for kubeconfigs**:
+## 1. Install Dependencies
 
-From the parent virtual machine, initialize `git-crypt` and export the key:
-
-```bash
-git-crypt init
-git-crypt export .gitcryptkey
-```
-
-If using multiple virtual machines, securely copy the `.gitcryptkey` to each additional machine:
+All binaries (`terraform`, `go`, `kustomize`) are downloaded locally into `./local/bin`.
 
 ```bash
-scp ./paper-slices-2025/.gitcryptkey <user>@<ip>:/home/<user>/paper-slices-2025/.gitcryptkey
+make deps
 ```
 
-This allows safe sharing of kubeconfigs via GitHub and simultaneous use across multiple virtual machines.
+This creates:
 
-## Running the Experiments
+```
+local/
+ ├── bin/           # terraform, go, kustomize, yq, etc.
+ └── configs/
+      ├── ansible/  # generated inventories
+      ├── k8s/      # per-cluster kubeconfigs
+      ├── prometheus/
+      ├── terraform/
+      └── tmp/
+```
 
-Run the following commands from the root directory only:
+---
 
-1. **Set up clusters**:
+# Build and Configure Clusters
+
+The full cluster lifecycle is:
+
+```
+Terraform → Kubespray → Monitoring
+```
+
+To execute the entire pipeline:
 
 ```bash
-./common/setup_cluster.sh <l2sces|submariner> <control|managed-n>
+make build
 ```
 
-2. **Install the components**:
+This performs:
+
+1. **clean** – Remove old state and local configs
+2. **deps** – Ensure binaries exist
+3. **tf-apply** – Apply Terraform and create VMs
+4. **inventory** – Generate Ansible inventories from Terraform outputs
+5. **ansible** – Use Kubespray to install Kubernetes on each cluster
+6. **monitoring** – Install cAdvisor & node-exporter on workers + deploy Prometheus operator
+
+---
+
+# Individual Commands
+
+### Apply or re-apply infrastructure
 
 ```bash
-./<l2sces|submariner>/install.sh
+make tf-apply
 ```
 
-3. **Execute experiments**:
+### Generate Kubespray inventories manually
 
 ```bash
-./experiments/<experiment-name>/start.sh
+make inventory
 ```
 
-## Viewing Experiment Results
-
-Results are stored at:
+### Run Kubespray against inventories
 
 ```bash
-./experiments/<experiment-name>/<date>
+make ansible
 ```
 
-Date format: `+%d%m%y_%H%M%S`
+### Deploy monitoring stack
 
-Example:
+(cAdvisor, node_exporter, Prometheus, Grafana)
 
 ```bash
-./experiments/multicast/290725_165543/graph.png
+make monitoring
 ```
 
-## Directory Structure
+### Merge generated kubeconfigs
 
-- `./common`:
+Creates `local/configs/kubeconfig` containing all clusters.
 
-  - Contains scripts and templates shared by both L2SM and Submariner experiments, including Prometheus installation, cluster setup scripts, and common templates.
+```bash
+make kubeconfig
+```
 
-- `./experiments`:
+---
 
-  - Includes experiment-specific scripts for both L2SM and Submariner.
-  - Running `./start.sh` initiates an automated pipeline, producing graphs and CSV results.
-  - Each experiment iteration is saved in a timestamped subdirectory with relevant documentation.
+# Running Experiments
 
-- `./l2sces | ./submariner`:
+All experiments live in:
 
-  - Contains environment-specific templates and final configurations.
-  - `control`, `managed-1`, and `managed-2` directories represent individual clusters with solution-specific templates.
+```
+experiments/<experiment-name>/
+```
 
-**IMPORTANT:** Always run scripts from the repository's **root directory**. Scripts are not path-independent.
+Each experiment has its own capture scripts, plotting code, and README.
 
+Notable experiment types:
 
+* `cpu_usage` – Resource utilization over time
+* `multicast` – Multicast transmission results (L2S-CES / Submariner)
+* `pods_tcpdump` – Cross-cluster packet captures
+* `setuptime` – Setup-time benchmarks
 
-cadvisor: 9101
-node exporter: 9102
+Results are typically written inside:
+
+```
+experiments/<experiment-name>/captures/
+experiments/<experiment-name>/<files>.csv
+plots (.png, .pdf)
+MATLAB and R scripts
+```
+
+---
+
+# Installing L2S-CES or Submariner
+
+Installers are located in:
+
+```
+installation/l2sces/
+installation/submariner/
+```
+
+Examples:
+
+```bash
+installation/l2sces/install.sh
+installation/submariner/install.sh
+```
+
+These scripts assume clusters are already provisioned and kubeconfigs exist in:
+
+```
+local/configs/k8s/
+```
+
+---
+
+# Monitoring Stack
+
+The monitoring pipeline installs:
+
+* **cAdvisor** (port 9101)
+* **node_exporter** (port 9102)
+* **Prometheus Operator**
+* **Grafana**
+
+Prometheus scrape targets are generated from Terraform outputs:
+
+```
+local/configs/prometheus/cmmap.yaml
+```
+
+Prometheus manifests live in:
+
+```
+monitoring/prometheus/
+```
+
