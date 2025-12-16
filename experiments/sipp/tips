@@ -1,0 +1,2 @@
+client: ip route add 239.0.0.1/32 dev net1
+server: ip maddr add 01:00:5e:00:00:01 dev net1 ip route add 239.0.0.1/32 dev net1joinmulticast.py
